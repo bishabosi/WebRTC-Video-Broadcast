@@ -13,7 +13,7 @@ enableAudioButton.addEventListener("click", enableAudio)
 socket.on("offer", (id, description) => {
   peerConnection = new RTCPeerConnection();
   peerConnection
-    .setRemoteDescription(new SessionDescription(description))
+    .setRemoteDescription(description)
     .then(function(){ peerConnection.createAnswer()})
     .then(function(sdp){ socket.emit("sdp", sdp); peerConnection.setLocalDescription(sdp)})
     .then(function() {
