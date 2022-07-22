@@ -16,11 +16,13 @@ socket.on("offer", (id, description) => {
     .then(() => {
       socket.emit("answer", id, peerConnection.localDescription);
     });
-  peerConnection.ontrack = event => {
+  peerConnection.ontrack = async event => {
     if('scrObject' in video) {
     video.srcObject = event.streams[0];
   } else {
-    video.src = URL.createObjectURL(event.streams[0])
+    var binaryData = [];
+    await binaryData.push(event.streams[0]);
+    video.src = window.URL.createObjectURL(new Blob(binaryData))
   }
   };
   peerConnection.onicecandidate = event => {
