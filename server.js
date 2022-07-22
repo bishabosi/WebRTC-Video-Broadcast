@@ -2,13 +2,30 @@ const express = require("express");
 const app = express();
 
 let broadcaster;
-const port = 4000;
+const port = 3000;
 
 const http = require("http");
 const server = http.createServer(app);
 
 const io = require("socket.io")(server);
-app.use(express.static(__dirname + "/public"));
+app.use(express.static("public"));
+app.use("*", checkHttps)
+
+app.get("/", (request, response) => {
+  response.sendFile(__dirname + "/public/index.html");
+});
+
+app.get("/cast", (request, response) => {
+  response.sendFile(__dirname + "/views/broadcast.html");
+});
+
+function checkHttps(req, res, next) {
+  if (req.get("X-Forwarded-Proto").indexOf("https") != -1) {
+    return next();
+  } else {
+    res.redirect("https://" + req.hostname + req.url);
+  }
+}
 
 io.sockets.on("error", e => console.log(e));
 io.sockets.on("connection", socket => {
