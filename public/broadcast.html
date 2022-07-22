@@ -15,8 +15,19 @@
       <select id="videoSource"></select>
     </section>
 
-    <video playsinline autoplay muted></video>
-    <script src="/socket.io/socket.io.js"></script>
-    <script src="/broadcast.js"></script>
+    <video playsinline autoplay muted controls></video>
+    <script>
+      
+let script1 = document.createElement("script");
+script1.src = "https://cdn.socket.io/4.5.1/socket.io.js";
+let script2 = document.createElement("script");
+script2.src = "/broadcast.js";
+
+document.body.append(script1);
+script1.onload = () => {
+  document.body.append(script2);
+};
+
+    </script>
   </body>
 </html>

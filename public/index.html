@@ -8,7 +8,18 @@
   <body>
     <video playsinline autoplay muted></video>
     <button id="enable-audio">Enable audio</button>
-    <script src="/socket.io/socket.io.js"></script>
-    <script src="/watch.js"></script>
+    <script>
+      
+      let script1 = document.createElement("script");
+      script1.src = "https://cdn.socket.io/4.5.1/socket.io.js";
+      let script2 = document.createElement("script");
+      script2.src = "/watch.js";
+      
+      document.body.append(script1);
+      script1.onload = () => {
+        document.body.append(script2);
+      };
+      
+          </script>
   </body>
 </html>
