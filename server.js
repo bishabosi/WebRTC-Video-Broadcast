@@ -10,7 +10,7 @@ app.use(express.static("public"));
 app.use("*", checkHttps)
 
 app.get("/", (request, response) => {
-  response.sendFile(__dirname + "/public/index.html");
+  response.sendFile(__dirname + "/views/index.html");
 });
 
 app.get("/cast", (request, response) => {
