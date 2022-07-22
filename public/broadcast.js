@@ -1,6 +1,5 @@
 const peerConnections = {};
 
-
 const socket = io();
 
 socket.on("answer", (id, description) => {
@@ -8,7 +7,7 @@ socket.on("answer", (id, description) => {
 });
 
 socket.on("watcher", id => {
-  const peerConnection = new RTCPeerConnection();
+  const peerConnection = new RTCPeerConnection(config);
   peerConnections[id] = peerConnection;
 
   let stream = videoElement.srcObject;
@@ -22,23 +21,15 @@ socket.on("watcher", id => {
 
   peerConnection
     .createOffer()
-    .then(sdp => { 
-      //sdp = sdp.replace("\r\na=extmap-allow-mixed","");
-      peerConnection.setLocalDescription(sdp)})
+    .then(sdp => peerConnection.setLocalDescription(sdp))
     .then(() => {
       socket.emit("offer", id, peerConnection.localDescription);
     });
 });
 
 socket.on("candidate", (id, candidate) => {
-  if (candidate){
   peerConnections[id].addIceCandidate(new RTCIceCandidate(candidate));
-  }
 });
-
-socket.on("sdp", (sdp)=> {
-  console.log(sdp)
-})
 
 socket.on("disconnectPeer", id => {
   peerConnections[id].close();

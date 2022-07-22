@@ -3,9 +3,6 @@ let peerConnection;
 
 const socket = io();
 const video = document.querySelector("video");
-video.addEventListener('canplay', (event) => {
-  video.play()
-});
 const enableAudioButton = document.querySelector("#enable-audio");
 
 enableAudioButton.addEventListener("click", enableAudio)
@@ -14,15 +11,15 @@ socket.on("offer", (id, description) => {
   peerConnection = new RTCPeerConnection();
   peerConnection
     .setRemoteDescription(description)
-    .then(async function(){ await peerConnection.createAnswer()})
-    .then(async function(sdp){ socket.emit("sdp", sdp); await peerConnection.setLocalDescription(sdp)})
-    .then(async function() {
+    .then(() => peerConnection.createAnswer())
+    .then(sdp => peerConnection.setLocalDescription(sdp))
+    .then(() => {
       socket.emit("answer", id, peerConnection.localDescription);
     });
-  peerConnection.ontrack = function(event) {
+  peerConnection.ontrack = event => {
     video.srcObject = event.streams[0];
   };
-  peerConnection.onicecandidate = function(event) {
+  peerConnection.onicecandidate = event => {
     if (event.candidate) {
       socket.emit("candidate", id, event.candidate);
     }
@@ -30,23 +27,21 @@ socket.on("offer", (id, description) => {
 });
 
 
-socket.on("candidate", function(id, candidate)  {
-  if (candidate) {
+socket.on("candidate", (id, candidate) => {
   peerConnection
     .addIceCandidate(new RTCIceCandidate(candidate))
     .catch(e => console.error(e));
-  }
 });
 
-socket.on("connect", function() {
+socket.on("connect", () => {
   socket.emit("watcher");
 });
 
-socket.on("broadcaster", function() {
+socket.on("broadcaster", () => {
   socket.emit("watcher");
 });
 
-window.onunload = window.onbeforeunload = function() {
+window.onunload = window.onbeforeunload = () => {
   socket.close();
   peerConnection.close();
 };
