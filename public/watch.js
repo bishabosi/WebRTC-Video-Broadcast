@@ -17,7 +17,11 @@ socket.on("offer", (id, description) => {
       socket.emit("answer", id, peerConnection.localDescription);
     });
   peerConnection.ontrack = event => {
+    if('scrObject' in video) {
     video.srcObject = event.streams[0];
+  } else {
+    video.src = URL.createObjectURL(event.streams[0])
+  }
   };
   peerConnection.onicecandidate = event => {
     if (event.candidate) {
