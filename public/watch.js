@@ -1,4 +1,4 @@
-let peerConnection;
+var peerConnection;
 
 
 const socket = io();
