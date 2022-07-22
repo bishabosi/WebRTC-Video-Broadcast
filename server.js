@@ -1,13 +1,11 @@
 const express = require("express");
 const app = express();
+var http = require("http").createServer(app);
+var port = process.env.PORT || 3000;
+var io = require("socket.io")(http);
 
 let broadcaster;
-const port = 3000;
 
-const http = require("http");
-const server = http.createServer(app);
-
-const io = require("socket.io")(server);
 app.use(express.static("public"));
 app.use("*", checkHttps)
 
@@ -49,4 +47,6 @@ io.sockets.on("connection", socket => {
     socket.to(broadcaster).emit("disconnectPeer", socket.id);
   });
 });
-server.listen(port, () => console.log(`Server is running on port ${port}`));
+http.listen(port, () => {
+  console.log("listening on *:" + port);
+});
