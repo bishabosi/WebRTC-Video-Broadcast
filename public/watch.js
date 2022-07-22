@@ -50,3 +50,9 @@ function enableAudio() {
   console.log("Enabling audio")
   video.muted = false;
 }
+
+window.onerror = function myErrorHandler(errorMsg, url, lineNumber) {
+  alert("Error occured: " + errorMsg);//or any message
+  document.body.innerHTML += "Error occured: " + errorMsg;
+  return false;
+}
