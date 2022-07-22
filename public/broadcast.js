@@ -31,7 +31,9 @@ socket.on("watcher", id => {
 });
 
 socket.on("candidate", (id, candidate) => {
+  if (candidate){
   peerConnections[id].addIceCandidate(new RTCIceCandidate(candidate));
+  }
 });
 
 socket.on("sdp", (sdp)=> {

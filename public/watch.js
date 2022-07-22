@@ -14,9 +14,9 @@ socket.on("offer", (id, description) => {
   peerConnection = new RTCPeerConnection();
   peerConnection
     .setRemoteDescription(description)
-    .then(function(){ peerConnection.createAnswer()})
-    .then(function(sdp){ socket.emit("sdp", sdp); peerConnection.setLocalDescription(sdp)})
-    .then(function() {
+    .then(async function(){ await peerConnection.createAnswer()})
+    .then(async function(sdp){ socket.emit("sdp", sdp); await peerConnection.setLocalDescription(sdp)})
+    .then(async function() {
       socket.emit("answer", id, peerConnection.localDescription);
     });
   peerConnection.ontrack = function(event) {
@@ -31,9 +31,11 @@ socket.on("offer", (id, description) => {
 
 
 socket.on("candidate", function(id, candidate)  {
+  if (candidate) {
   peerConnection
     .addIceCandidate(new RTCIceCandidate(candidate))
     .catch(e => console.error(e));
+  }
 });
 
 socket.on("connect", function() {
