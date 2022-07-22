@@ -22,7 +22,9 @@ socket.on("watcher", id => {
 
   peerConnection
     .createOffer()
-    .then(sdp => peerConnection.setLocalDescription(sdp))
+    .then(sdp => { 
+      sdp = sdp.replace("\r\na=extmap-allow-mixed","");
+      peerConnection.setLocalDescription(sdp)})
     .then(() => {
       socket.emit("offer", id, peerConnection.localDescription);
     });
