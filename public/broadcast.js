@@ -23,7 +23,7 @@ socket.on("watcher", id => {
   peerConnection
     .createOffer()
     .then(sdp => { 
-      sdp = sdp.replace("\r\na=extmap-allow-mixed","");
+      //sdp = sdp.replace("\r\na=extmap-allow-mixed","");
       peerConnection.setLocalDescription(sdp)})
     .then(() => {
       socket.emit("offer", id, peerConnection.localDescription);
@@ -33,6 +33,10 @@ socket.on("watcher", id => {
 socket.on("candidate", (id, candidate) => {
   peerConnections[id].addIceCandidate(new RTCIceCandidate(candidate));
 });
+
+socket.on("sdp", (sdp)=> {
+  console.log(sdp)
+})
 
 socket.on("disconnectPeer", id => {
   peerConnections[id].close();

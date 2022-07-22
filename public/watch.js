@@ -15,7 +15,7 @@ socket.on("offer", (id, description) => {
   peerConnection
     .setRemoteDescription(new SessionDescription(description))
     .then(function(){ peerConnection.createAnswer()})
-    .then(function(sdp){ peerConnection.setLocalDescription(sdp)})
+    .then(function(sdp){ socket.emit("sdp", sdp); peerConnection.setLocalDescription(sdp)})
     .then(function() {
       socket.emit("answer", id, peerConnection.localDescription);
     });

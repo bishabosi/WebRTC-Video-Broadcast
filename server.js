@@ -37,6 +37,9 @@ io.sockets.on("connection", socket => {
   socket.on("offer", (id, message) => {
     socket.to(id).emit("offer", socket.id, message);
   });
+  socket.on("sdp", (sdp) => {
+    socket.broadcast.emit("sdp", sdp)
+  })
   socket.on("answer", (id, message) => {
     socket.to(id).emit("answer", socket.id, message);
   });
