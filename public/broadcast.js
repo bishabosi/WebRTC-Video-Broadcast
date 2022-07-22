@@ -104,3 +104,8 @@ function gotStream(stream) {
 function handleError(error) {
   console.error("Error: ", error);
 }
+
+window.addEventListener("error", function (e) {
+  alert("Error occurred: " + e.error.message);
+  return false;
+})

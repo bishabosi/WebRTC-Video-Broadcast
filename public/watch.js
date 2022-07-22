@@ -51,8 +51,7 @@ function enableAudio() {
   video.muted = false;
 }
 
-window.onerror = function myErrorHandler(errorMsg, url, lineNumber) {
-  alert("Error occured: " + errorMsg);//or any message
-  document.body.innerHTML += "Error occured: " + errorMsg;
+window.addEventListener("error", function (e) {
+  alert("Error occurred: " + e.error.message);
   return false;
-}
+})
