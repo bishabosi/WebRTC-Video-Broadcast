@@ -3,6 +3,9 @@ let peerConnection;
 
 const socket = io();
 const video = document.querySelector("video");
+video.addEventListener('canplay', (event) => {
+  video.play()
+});
 const enableAudioButton = document.querySelector("#enable-audio");
 
 enableAudioButton.addEventListener("click", enableAudio)
@@ -16,9 +19,8 @@ socket.on("offer", (id, description) => {
     .then(function() {
       socket.emit("answer", id, peerConnection.localDescription);
     });
-  peerConnection.ontrack = async function(event) {
+  peerConnection.ontrack = function(event) {
     video.srcObject = event.streams[0];
-    await video.play();
   };
   peerConnection.onicecandidate = function(event) {
     if (event.candidate) {
