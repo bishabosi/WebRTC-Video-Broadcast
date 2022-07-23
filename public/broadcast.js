@@ -3,7 +3,10 @@ const peerConnections = {};
 const socket = io();
 
 socket.on("answer", (id, description) => {
-  peerConnections[id].setRemoteDescription(description);
+  peerConnections[id].setRemoteDescription(description).then(()=>{
+    let stream = videoElement.srcObject;
+  stream.getTracks().forEach(track => peerConnection.addTrack(track, stream));
+  });
 });
 
 document.getElementById("btn").onclick = () => {
@@ -13,9 +16,6 @@ document.getElementById("btn").onclick = () => {
 socket.on("watcher", id => {
   const peerConnection = new RTCPeerConnection();
   peerConnections[id] = peerConnection;
-
-  let stream = videoElement.srcObject;
-  stream.getTracks().forEach(track => peerConnection.addTrack(track, stream));
 
   peerConnection.onicecandidate = event => {
     if (event.candidate) {
@@ -32,7 +32,9 @@ socket.on("watcher", id => {
 });
 
 socket.on("candidate", (id, candidate) => {
+  if(candidate !== null){
   peerConnections[id].addIceCandidate(new RTCIceCandidate(candidate));
+  }
 });
 
 socket.on("disconnectPeer", id => {
