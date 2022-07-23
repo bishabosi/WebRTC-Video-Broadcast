@@ -38,7 +38,7 @@ socket.on("candidate", (id, candidate) => {
   if(candidate !== null) {
     console.log(candidate)
   peerConnection
-    .addIceCandidate(new RTCIceCandidate(candidate))
+    .addIceCandidate(new RTCIceCandidate(candidate)).catch(e => console.error(e));
   }
 });
 
