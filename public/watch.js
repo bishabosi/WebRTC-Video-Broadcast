@@ -9,7 +9,8 @@ const video = document.querySelector("video");
 
 var config = {iceServers: [{'url': 'stun:stun.l.google.com:19302'}]}
 
-socket.on("offer", async data => {
+socket.on("offer", async function(data) {
+  
   peerConnection = new webkitRTCPeerConnection(config);
   
   await peerConnection
