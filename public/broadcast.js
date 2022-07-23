@@ -7,13 +7,13 @@ const socket = io();
 var config = {iceServers: [{'url': 'stun:stun.l.google.com:19302'}]}
 
 socket.on("answer", (id, description) => {
-  peerConnections[id].setRemoteDescription(description);
+  //peerConnections[id].setRemoteDescription(description);
 });
 
 socket.on("watcher", async (id) => {
   const peerConnection = new RTCPeerConnection(config);
   peerConnections[id] = peerConnection;
-
+  peerConnections[id].setRemoteDescription(description);
   let stream = videoElement.srcObject;
 
   peerConnection.onicecandidate = event => {

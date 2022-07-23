@@ -9,15 +9,19 @@ const video = document.querySelector("video");
 
 var config = {iceServers: [{'url': 'stun:stun.l.google.com:19302'}]}
 
-socket.on("offer", (id, description) => {
+socket.on("offer", async (id, description) => {
   peerConnection = new webkitRTCPeerConnection(config);
-  peerConnection
+  
+  await peerConnection
     .setRemoteDescription(new RTCSessionDescription(description), function() {
-      peerConnection.createAnswer().then(sdp => peerConnection.setLocalDescription(sdp))
+      console.log("description set")
+    });
+
+    peerConnection.createAnswer().then(sdp => peerConnection.setLocalDescription(sdp))
       .then(() => {
+        console.log("answer")
         socket.emit("answer", id, peerConnection.localDescription);
       })
-    })
   peerConnection.onaddstream = event => {
     video.srcObject = event.stream;
     video.muted = false;
