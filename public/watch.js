@@ -8,7 +8,7 @@ const video = document.querySelector("video");
 //enableAudioButton.addEventListener("click", enableAudio)
 
 socket.on("offer", (id, description) => {
-  peerConnection = new RTCPeerConnection();
+  peerConnection = new webkitRTCPeerConnection();
   peerConnection
     .setRemoteDescription(description)
     .then(() => peerConnection.createAnswer())
