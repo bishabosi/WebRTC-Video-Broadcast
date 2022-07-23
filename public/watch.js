@@ -15,8 +15,8 @@ socket.on("offer", (id, description) => {
   
   peerConnection
     .setRemoteDescription(new RTCSessionDescription(description), function() {
-      console.log("description set");
-      peerConnection.createAnswer().then(sdp => peerConnection.setLocalDescription(sdp))
+      //console.log("description set");
+      return peerConnection.createAnswer().then(sdp => peerConnection.setLocalDescription(sdp))
       .then(() => {
         console.log("answer")
         socket.emit("answer", id, peerConnection.localDescription);
