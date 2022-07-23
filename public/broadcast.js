@@ -4,20 +4,18 @@ var peerConnection;
 
 const socket = io();
 
+var config = {iceServers: [{'url': 'stun:stun.l.google.com:19302'}]}
+
 socket.on("answer", (id, description) => {
-  peerConnections[id].setRemoteDescription(description).then(()=>{
-    let stream = videoElement.srcObject;
-  stream.getTracks().forEach(track => peerConnection.addTrack(track, stream));
-  });
+  peerConnections[id].setRemoteDescription(description);
 });
 
-document.getElementById("btn").onclick = () => {
-  socket.emit("url")
-}
-
 socket.on("watcher", id => {
-  peerConnection = new RTCPeerConnection();
+  const peerConnection = new RTCPeerConnection(config);
   peerConnections[id] = peerConnection;
+
+  let stream = videoElement.srcObject;
+  stream.getTracks().forEach(track => peerConnection.addTrack(track, stream));
 
   peerConnection.onicecandidate = event => {
     if (event.candidate) {
