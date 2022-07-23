@@ -23,7 +23,7 @@ socket.on("offer", (id, description) => {
     video.muted = false;
   };
   peerConnection.onicecandidate = event => {
-    if (event.candidate) {
+    if (event.candidate !== null) {
       socket.emit("candidate", id, event.candidate);
     }
   };
