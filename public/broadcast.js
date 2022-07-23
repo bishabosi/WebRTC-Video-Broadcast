@@ -1,5 +1,7 @@
 const peerConnections = {};
 
+var peerConnection;
+
 const socket = io();
 
 socket.on("answer", (id, description) => {
@@ -14,7 +16,7 @@ document.getElementById("btn").onclick = () => {
 }
 
 socket.on("watcher", id => {
-  const peerConnection = new RTCPeerConnection();
+  peerConnection = new RTCPeerConnection();
   peerConnections[id] = peerConnection;
 
   peerConnection.onicecandidate = event => {
