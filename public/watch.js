@@ -18,8 +18,8 @@ socket.on("offer", (id, description) => {
         socket.emit("answer", id, peerConnection.localDescription);
       })
     })
-  peerConnection.ontrack = event => {
-    video.srcObject = event.streams[0];
+  peerConnection.onaddstream = event => {
+    video.srcObject = event.stream;
     video.muted = false;
   };
   peerConnection.onicecandidate = event => {

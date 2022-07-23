@@ -15,7 +15,6 @@ socket.on("watcher", async (id) => {
   peerConnections[id] = peerConnection;
 
   let stream = videoElement.srcObject;
-  stream.getTracks().forEach(track => peerConnection.addTrack(track, stream));
 
   peerConnection.onicecandidate = event => {
     if (event.candidate) {
@@ -27,6 +26,7 @@ socket.on("watcher", async (id) => {
     .createOffer()
     .then(sdp => peerConnection.setLocalDescription(sdp))
     .then(() => {
+      peerConnection.addStream(stream)
       socket.emit("offer", id, peerConnection.localDescription);
     });
 });
