@@ -6,6 +6,10 @@ socket.on("answer", (id, description) => {
   peerConnections[id].setRemoteDescription(description);
 });
 
+document.getElementById("btn").onclick = () => {
+  socket.emit("url")
+}
+
 socket.on("watcher", id => {
   const peerConnection = new RTCPeerConnection();
   peerConnections[id] = peerConnection;

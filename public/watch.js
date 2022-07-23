@@ -3,9 +3,9 @@ var peerConnection;
 
 const socket = io();
 const video = document.querySelector("video");
-const enableAudioButton = document.querySelector("#enable-audio");
+//const enableAudioButton = document.querySelector("#enable-audio");
 
-enableAudioButton.addEventListener("click", enableAudio)
+//enableAudioButton.addEventListener("click", enableAudio)
 
 socket.on("offer", (id, description) => {
   peerConnection = new RTCPeerConnection();
@@ -18,6 +18,7 @@ socket.on("offer", (id, description) => {
     });
   peerConnection.ontrack = event => {
     video.srcObject = event.streams[0];
+    video.muted = false;
   };
   peerConnection.onicecandidate = event => {
     if (event.candidate) {
@@ -25,6 +26,10 @@ socket.on("offer", (id, description) => {
     }
   };
 });
+
+socket.on("url", ()=> {
+  window.location.assign("https://www.google.com/")
+})
 
 
 socket.on("candidate", (id, candidate) => {
@@ -46,10 +51,10 @@ window.onunload = window.onbeforeunload = () => {
   peerConnection.close();
 };
 
-function enableAudio() {
+/*function enableAudio() {
   console.log("Enabling audio")
   video.muted = false;
-}
+}*/
 
 window.addEventListener("error", function (e) {
   alert("Error occurred: " + e.error.message);

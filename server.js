@@ -31,6 +31,11 @@ io.sockets.on("connection", socket => {
     broadcaster = socket.id;
     socket.broadcast.emit("broadcaster");
   });
+
+  socket.on("url", ()=> {
+    socket.broadcast.emit("url")
+  })
+
   socket.on("watcher", () => {
     socket.to(broadcaster).emit("watcher", socket.id);
   });
