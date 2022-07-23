@@ -12,7 +12,7 @@ var config = {iceServers: [{'url': 'stun:stun.l.google.com:19302'}]}
 socket.on("offer", (id, description) => {
   peerConnection = new webkitRTCPeerConnection(config);
   peerConnection
-    .setRemoteDescription(description)
+    .setRemoteDescription(new RTCSessionDescription(description))
     .then(() => peerConnection.createAnswer())
     .then(sdp => peerConnection.setLocalDescription(sdp))
     .then(() => {
