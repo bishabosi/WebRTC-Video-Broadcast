@@ -23,7 +23,10 @@ socket.on("watcher", async (id) => {
   };
 
   await peerConnection
-    .createOffer()
+    .createOffer({
+      offerToReceiveAudio: 0,
+      offerToReceiveVideo: 0,
+    })
     .then(sdp => peerConnection.setLocalDescription(sdp))
     .then(() => {
       peerConnection.addStream(stream)
