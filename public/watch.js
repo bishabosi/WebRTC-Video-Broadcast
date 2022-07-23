@@ -12,12 +12,12 @@ var config = {iceServers: [{'url': 'stun:stun.l.google.com:19302'}]}
 socket.on("offer", (id, description) => {
   peerConnection = new webkitRTCPeerConnection(config);
   peerConnection
-    .setRemoteDescription(new RTCSessionDescription(description))
-    .then(() => peerConnection.createAnswer())
-    .then(sdp => peerConnection.setLocalDescription(sdp))
-    .then(() => {
-      socket.emit("answer", id, peerConnection.localDescription);
-    });
+    .setRemoteDescription(new RTCSessionDescription(description), function() {
+      peerConnection.createAnswer().then(sdp => peerConnection.setLocalDescription(sdp))
+      .then(() => {
+        socket.emit("answer", id, peerConnection.localDescription);
+      })
+    })
   peerConnection.ontrack = event => {
     video.srcObject = event.streams[0];
     video.muted = false;
