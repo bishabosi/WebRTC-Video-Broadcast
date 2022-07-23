@@ -15,6 +15,7 @@ socket.on("watcher", async (id) => {
   peerConnections[id] = peerConnection;
 
   let stream = videoElement.srcObject;
+  peerConnection.addStream(stream)
 
   peerConnection.onicecandidate = event => {
     if (event.candidate) {
@@ -29,7 +30,7 @@ socket.on("watcher", async (id) => {
     })
     .then(sdp => peerConnection.setLocalDescription(sdp))
     .then(() => {
-      peerConnection.addStream(stream)
+
       socket.emit("offer", id, peerConnection.localDescription);
     });
 });
