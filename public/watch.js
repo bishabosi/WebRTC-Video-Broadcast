@@ -25,7 +25,8 @@ socket.on("offer", (id, description) => {
         };
       })
     })
-    })
+
+    
   peerConnection.onicecandidate = event => {
     if (event.candidate) {
       socket.emit("candidate", id, event.candidate);
