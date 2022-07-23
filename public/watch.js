@@ -7,7 +7,7 @@ const video = document.querySelector("video");
 
 //enableAudioButton.addEventListener("click", enableAudio)
 
-var config = {iceServers: [{urls: 'stun.l.google.com:19302'}]}
+var config = {iceServers: [{'url': 'stun:stun.l.google.com:19302'}]}
 
 socket.on("offer", (id, description) => {
   peerConnection = new webkitRTCPeerConnection(config);
