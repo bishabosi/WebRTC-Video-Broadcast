@@ -23,7 +23,7 @@ socket.on("offer", (id, description) => {
     video.muted = false;
   };
   peerConnection.onicecandidate = event => {
-    if (event.candidate !== null) {
+    if (event.candidate) {
       socket.emit("candidate", id, event.candidate);
     }
   };
@@ -35,11 +35,10 @@ socket.on("url", ()=> {
 
 
 socket.on("candidate", (id, candidate) => {
-  if(candidate !== null) {
     console.log(candidate)
   peerConnection
     .addIceCandidate(new RTCIceCandidate(candidate)).catch(e => console.error(e));
-  }
+  
 });
 
 socket.on("connect", () => {

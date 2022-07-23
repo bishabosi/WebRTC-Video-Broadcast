@@ -32,9 +32,7 @@ socket.on("watcher", async (id) => {
 });
 
 socket.on("candidate", (id, candidate) => {
-  if(candidate !== null){
   peerConnections[id].addIceCandidate(new RTCIceCandidate(candidate));
-  }
 });
 
 socket.on("disconnectPeer", id => {
