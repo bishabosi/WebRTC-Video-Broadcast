@@ -40,10 +40,12 @@ socket.on("url", ()=> {
 
 
 socket.on("candidate", (id, candidate) => {
+  var candidatesQueue = []
     console.log(candidate)
+    if(peerConnection.remoteDescription) {
   peerConnection
     .addIceCandidate(new RTCIceCandidate(candidate)).catch(e => console.error(e));
-  
+    }
 });
 
 socket.on("connect", () => {
