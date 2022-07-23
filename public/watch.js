@@ -20,12 +20,12 @@ socket.on("offer", (id, description) => {
       .then(() => {
         console.log("answer")
         socket.emit("answer", id, peerConnection.localDescription);
+        peerConnection.onaddstream = event => {
+          video.srcObject = event.stream;
+          video.muted = false;
+        };
       })
     })
-  peerConnection.onaddstream = event => {
-    video.srcObject = event.stream;
-    video.muted = false;
-  };
   peerConnection.onicecandidate = event => {
     if (event.candidate) {
       socket.emit("candidate", id, event.candidate);
