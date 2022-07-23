@@ -9,17 +9,17 @@ const video = document.querySelector("video");
 
 var config = {iceServers: [{'url': 'stun:stun.l.google.com:19302'}]}
 
-socket.on("offer", function(data) {
+socket.on("offer", (id, description) => {
 
   peerConnection = new webkitRTCPeerConnection(config);
   
   peerConnection
-    .setRemoteDescription(new RTCSessionDescription(data.msg), function() {
+    .setRemoteDescription(new RTCSessionDescription(description), function() {
       console.log("description set");
       peerConnection.createAnswer().then(sdp => peerConnection.setLocalDescription(sdp))
       .then(() => {
         console.log("answer")
-        socket.emit("answer", data.id, peerConnection.localDescription);
+        socket.emit("answer", id, peerConnection.localDescription);
       })
     })
   peerConnection.onaddstream = event => {
@@ -28,7 +28,7 @@ socket.on("offer", function(data) {
   };
   peerConnection.onicecandidate = event => {
     if (event.candidate) {
-      socket.emit("candidate", data.id, event.candidate);
+      socket.emit("candidate", id, event.candidate);
     }
   };
 });

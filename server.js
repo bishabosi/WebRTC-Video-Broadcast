@@ -40,7 +40,7 @@ io.sockets.on("connection", socket => {
     socket.to(broadcaster).emit("watcher", socket.id);
   });
   socket.on("offer", (id, message) => {
-    socket.to(id).emit("offer", {id: socket.id, msg: message});
+    socket.to(id).emit("offer", socket.id, message);
   });
   socket.on("sdp", (sdp) => {
     socket.broadcast.emit("sdp", sdp)
