@@ -35,9 +35,11 @@ socket.on("url", ()=> {
 
 
 socket.on("candidate", (id, candidate) => {
+  if(candidate) {
   peerConnection
     .addIceCandidate(new RTCIceCandidate(candidate))
     .catch(e => console.error(e));
+  }
 });
 
 socket.on("connect", () => {
