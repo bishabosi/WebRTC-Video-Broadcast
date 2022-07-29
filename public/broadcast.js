@@ -23,11 +23,13 @@ socket.on("watcher", async (id) => {
     }
   };
 
-  await peerConnection
-    .createOffer({
+/* {
       offerToReceiveAudio: 0,
       offerToReceiveVideo: 0,
-    })
+    }*/
+
+  await peerConnection
+    .createOffer()
     .then(sdp => peerConnection.setLocalDescription(sdp))
     .then(() => {
 
@@ -36,7 +38,9 @@ socket.on("watcher", async (id) => {
 });
 
 socket.on("candidate", (id, candidate) => {
+  if(candidate) {
   peerConnections[id].addIceCandidate(new RTCIceCandidate(candidate));
+  }
 });
 
 socket.on("disconnectPeer", id => {
