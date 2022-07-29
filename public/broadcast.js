@@ -19,6 +19,7 @@ socket.on("watcher", async (id) => {
 
   peerConnection.onicecandidate = event => {
     if (event.candidate) {
+      //peerConnection.addIceCandidate(new RTCIceCandidate(candidate)).catch(e => console.error(e));
       socket.emit("candidate", id, event.candidate);
     }
   };
