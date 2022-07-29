@@ -11,7 +11,6 @@ socket.on("answer", (id, description) => {
 });
 
 socket.on("watcher", async (id) => {
-  const RTCPeerConnection = window.RTCPeerConnection || webkitRTCPeerConnection;
   const peerConnection = new RTCPeerConnection(config);
   peerConnections[id] = peerConnection;
 
