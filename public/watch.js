@@ -29,7 +29,7 @@ socket.on("offer", (id, description) => {
     
   peerConnection.onicecandidate = event => {
     if (event.candidate) {
-      peerConnection.addIceCandidate(new RTCIceCandidate(candidate)).catch(e => console.error(e));
+      //peerConnection.addIceCandidate(new RTCIceCandidate(candidate))
       socket.emit("candidate", id, event.candidate);
     }
   };
@@ -51,7 +51,7 @@ socket.on("candidate", (id, candidate) => {
       //peerConnection
     //.addIceCandidate(new RTCIceCandidate(candidate)).catch(e => console.error(e));
       //} else {
-      //peerConnection.addIceCandidate(new RTCIceCandidate(candidate)).catch(e => console.error(e));
+        if(candidate) peerConnection.addIceCandidate(new RTCIceCandidate(candidate))
      // }
     //}
   //} else {
