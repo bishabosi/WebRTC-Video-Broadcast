@@ -11,7 +11,7 @@ socket.on("answer", (id, description) => {
 });
 
 socket.on("watcher", async (id) => {
-  const peerConnection = new RTCPeerConnection();
+  const peerConnection = new RTCPeerConnection(config);
   peerConnections[id] = peerConnection;
 
   let stream = videoElement.srcObject;
