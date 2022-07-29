@@ -44,9 +44,15 @@ socket.on("url", ()=> {
 socket.on("candidate", (id, candidate) => {
   var candidatesQueue = []
     console.log(candidate)
-    if(peerConnection.remoteDescription) {
-  peerConnection
-    .addIceCandidate(new RTCIceCandidate(candidate)).catch(e => console.error(e));
+    if(!peerConnection || !peerConnection.remoteDescription.type) {
+      candidatesQueue.push({candidate:candidate})
+    } else {
+      if(candidatesQueue.length > 0) {
+        var entry = candidatesQueue.shift();
+        peerConnection.addIceCandidate(new RTCIceCandidate(entry.candidate));
+      //peerConnection
+    //.addIceCandidate(new RTCIceCandidate(candidate)).catch(e => console.error(e));
+      }
     }
 });
 
