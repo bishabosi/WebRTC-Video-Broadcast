@@ -10,8 +10,8 @@ const video = document.querySelector("video");
 var config = {iceServers: [{'url': 'stun:stun.l.google.com:19302'}]}
 
 socket.on("offer", (id, description) => {
-  const RTCPeerConnection = RTCPeerConnection || window.RTCPeerConnection || window.webkitRTCPeerConnection;
-  peerConnection = new webkitRTCPeerConnection(config);
+  const RTCPeerConnection =  window.RTCPeerConnection || window.webkitRTCPeerConnection;
+  peerConnection = new RTCPeerConnection(config);
   
   peerConnection
     .setRemoteDescription(new RTCSessionDescription(description), function() {
