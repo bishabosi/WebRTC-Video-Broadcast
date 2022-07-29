@@ -14,7 +14,7 @@ socket.on("offer", (id, description) => {
   peerConnection = new webkitRTCPeerConnection(config);
   
   peerConnection
-    .setRemoteDescription(new RTCSessionDescription(description)).then(()=>{
+    .setRemoteDescription(new RTCSessionDescription(description), function() {
       peerConnection.createAnswer().then(sdp => peerConnection.setLocalDescription(sdp))
       .then(() => {
         console.log("answer")
@@ -25,6 +25,8 @@ socket.on("offer", (id, description) => {
         };
       })
     })
+      
+    
 
     
   peerConnection.onicecandidate = event => {
