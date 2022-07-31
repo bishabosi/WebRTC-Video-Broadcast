@@ -9,19 +9,33 @@ const video = document.querySelector("video");
 
 var config = {iceServers: [{'url': 'stun:stun.l.google.com:19302'}]}
 
+
 socket.on("offer", (id, description) => {
   //const RTCPeerConnection =  window.RTCPeerConnection || window.webkitRTCPeerConnection;
   peerConnection = new webkitRTCPeerConnection(config);
-  
-  peerConnection
-    .setRemoteDescription(new RTCSessionDescription(description), function() {
-      peerConnection.createAnswer().then(sdp => {return peerConnection.setLocalDescription(sdp)})
+  const myFirstPromise = new Promise((resolve, reject) => {
+    // We call resolve(...) when what we were doing asynchronously was successful, and reject(...) when it failed.
+    // In this example, we use setTimeout(...) to simulate async code.
+    // In reality, you will probably be using something like XHR or an HTML5 API.
+    let description;
+    
+    peerConnection
+      .setRemoteDescription(new RTCSessionDescription(description));
+      resolve("y")
+    
+  });
+
+  myFirstPromise.then((successMessage) => {
+    if(successMessage == "y") {
+    peerConnection.createAnswer().then(sdp => {return peerConnection.setLocalDescription(sdp)})
       .then(() => {
         console.log("answer")
         socket.emit("answer", id, peerConnection.localDescription);
         
       })
-    })
+    }
+  });
+
     peerConnection.onaddstream = event => {
       video.srcObject = event.stream;
       video.muted = false;
