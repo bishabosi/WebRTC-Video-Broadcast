@@ -13,14 +13,14 @@ var config = {iceServers: [{'url': 'stun:stun.l.google.com:19302'}]}
 socket.on("offer", (id, description) => {
   //const RTCPeerConnection =  window.RTCPeerConnection || window.webkitRTCPeerConnection;
   peerConnection = new webkitRTCPeerConnection(config);
+  let desc = description;
   const myFirstPromise = new Promise((resolve, reject) => {
     // We call resolve(...) when what we were doing asynchronously was successful, and reject(...) when it failed.
     // In this example, we use setTimeout(...) to simulate async code.
     // In reality, you will probably be using something like XHR or an HTML5 API.
-    let description;
     
     peerConnection
-      .setRemoteDescription(new RTCSessionDescription(description));
+      .setRemoteDescription(new RTCSessionDescription(desc));
       resolve("y")
     
   });
@@ -31,7 +31,6 @@ socket.on("offer", (id, description) => {
       .then(() => {
         console.log("answer")
         socket.emit("answer", id, peerConnection.localDescription);
-        
       })
     }
   });
