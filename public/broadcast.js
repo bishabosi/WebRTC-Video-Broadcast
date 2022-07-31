@@ -15,15 +15,15 @@ socket.on("watcher", async (id) => {
   peerConnections[id] = peerConnection;
 
   let stream = videoElement.srcObject;
+  peerConnection.addStream(stream)
 
-
-  peerConnection.addEventListener("signalingstatechange", (ev) => {
+/*  peerConnection.addEventListener("signalingstatechange", (ev) => {
     switch(peerConnection.signalingState) {
       case "stable":
         peerConnection.addStream(stream)
         break;
     }
-  }, false);
+  }, false);*/
 
   peerConnection.onicecandidate = event => {
     if (event.candidate) {
