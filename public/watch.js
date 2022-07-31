@@ -1,65 +1,50 @@
 var peerConnection;
-
-
 const socket = io();
-const video = document.querySelector("video");
-//const enableAudioButton = document.querySelector("#enable-audio");
-
+const video = document.querySelector("video"); //const enableAudioButton = document.querySelector("#enable-audio");
 //enableAudioButton.addEventListener("click", enableAudio)
 
-var config = {iceServers: [{'url': 'stun:stun.l.google.com:19302'}]}
-
-
+var config = {
+  iceServers: [
+    {
+      url: "stun:stun.l.google.com:19302"
+    }
+  ]
+};
 socket.on("offer", (id, description) => {
-  //const RTCPeerConnection =  window.RTCPeerConnection || window.webkitRTCPeerConnection;
-  peerConnection = new webkitRTCPeerConnection(config);
-  let desc = description;
-  /*const myFirstPromise = new Promise((resolve, reject) => {
-    // We call resolve(...) when what we were doing asynchronously was successful, and reject(...) when it failed.
-    // In this example, we use setTimeout(...) to simulate async code.
-    // In reality, you will probably be using something like XHR or an HTML5 API.
-    
-    peerConnection
-      .setRemoteDescription(new RTCSessionDescription(desc));
-      resolve("y")
-    
-  });
+  return Promise.resolve()
+    .then(function () {
+      //const RTCPeerConnection =  window.RTCPeerConnection || window.webkitRTCPeerConnection;
+      peerConnection = new webkitRTCPeerConnection(config);
+      let desc = description;
+      return peerConnection.setRemoteDescription(
+        new RTCSessionDescription(description)
+      );
+    })
+    .then(function () {
+      return peerConnection
+        .createAnswer()
+        .then((sdp) => peerConnection.setLocalDescription(sdp))
+        .then(() => {
+          socket.emit("answer", id, peerConnection.localDescription);
+        });
+    })
+    .then(function () {
+      peerConnection.onaddstream = (event) => {
+        video.srcObject = event.stream;
+        video.muted = false;
+      };
 
-  myFirstPromise.then((successMessage) => {
-    if(successMessage == "y") {
-    peerConnection.createAnswer().then(sdp => {return peerConnection.setLocalDescription(sdp)})
-      .then(() => {
-        console.log("answer")
-        socket.emit("answer", id, peerConnection.localDescription);
-      })
-    }
-  });*/
-  peerConnection
-    .setRemoteDescription(description)
-    .then(() => peerConnection.createAnswer())
-    .then(sdp => peerConnection.setLocalDescription(sdp))
-    .then(() => {
-      socket.emit("answer", id, peerConnection.localDescription);
+      peerConnection.onicecandidate = (event) => {
+        if (event.candidate) {
+          //peerConnection.addIceCandidate(new RTCIceCandidate(candidate))
+          socket.emit("candidate", id, event.candidate);
+        }
+      };
     });
-
-    peerConnection.onaddstream = event => {
-      video.srcObject = event.stream;
-      video.muted = false;
-    }; 
-    
-  peerConnection.onicecandidate = event => {
-    if (event.candidate) {
-      //peerConnection.addIceCandidate(new RTCIceCandidate(candidate))
-      socket.emit("candidate", id, event.candidate);
-    }
-  };
 });
-
-socket.on("url", ()=> {
-  window.location.assign("https://www.google.com/")
-})
-
-
+socket.on("url", () => {
+  window.location.assign("https://www.google.com/");
+});
 /*socket.on("candidate", (id, candidate) => {
   //var candidatesQueue = []
     //console.log(candidate)
@@ -81,14 +66,12 @@ socket.on("url", ()=> {
 
 socket.on("candidate", (id, candidate) => {
   peerConnection
-    .addIceCandidate(candidate)
-    .catch(e => console.error(e));
+    .addIceCandidate(new RTCIceCandidate(candidate))
+    .catch((e) => console.error(e));
 });
-
 socket.on("connect", () => {
   socket.emit("watcher");
 });
-
 socket.on("broadcaster", () => {
   socket.emit("watcher");
 });
@@ -97,7 +80,6 @@ window.onunload = window.onbeforeunload = () => {
   socket.close();
   peerConnection.close();
 };
-
 /*function enableAudio() {
   console.log("Enabling audio")
   video.muted = false;
@@ -106,4 +88,4 @@ window.onunload = window.onbeforeunload = () => {
 window.addEventListener("error", function (e) {
   alert("Error occurred: " + e.error.message);
   return false;
-})
+});
