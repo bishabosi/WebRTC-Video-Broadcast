@@ -60,7 +60,7 @@ socket.on("url", ()=> {
 })
 
 
-socket.on("candidate", (id, candidate) => {
+/*socket.on("candidate", (id, candidate) => {
   //var candidatesQueue = []
     //console.log(candidate)
     //if(peerConnection.signalingState == "stable") {
@@ -77,6 +77,12 @@ socket.on("candidate", (id, candidate) => {
   //} else {
     //  candidatesQueue.push({candidate:candidate})
    // }
+});*/
+
+socket.on("candidate", (id, candidate) => {
+  peerConnection
+    .addIceCandidate(candidate)
+    .catch(e => console.error(e));
 });
 
 socket.on("connect", () => {
