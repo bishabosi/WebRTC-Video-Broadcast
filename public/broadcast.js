@@ -18,7 +18,7 @@ socket.on("watcher", async (id) => {
 
 
   peerConnection.addEventListener("signalingstatechange", (ev) => {
-    switch(pc.signalingState) {
+    switch(peerConnection.signalingState) {
       case "stable":
         peerConnection.addStream(stream)
         break;
