@@ -22,7 +22,7 @@ socket.on("offer", (id, description) => {
     })
     .then(function () {
       return peerConnection
-        .createAnswer()
+        .createAnswer(()=>console.log("success"))
         .then((sdp) => peerConnection.setLocalDescription(sdp))
         .then(() => {
           socket.emit("answer", id, peerConnection.localDescription);
