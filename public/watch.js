@@ -13,29 +13,17 @@ var config = {
 socket
   .on("offer", (id, description) => {
     let desc = description;
-    return Promise.resolve()
-      .then(function () {
-        //const RTCPeerConnection =  window.RTCPeerConnection || window.webkitRTCPeerConnection;
-        peerConnection = new webkitRTCPeerConnection(config);
-        return peerConnection.setRemoteDescription(
-          new RTCSessionDescription(desc)
-        );
-      })
-      .then(function () {
-        return peerConnection.createAnswer(function (sdp) {
-          return Promise.resolve()
-            .then(function () {
-              return peerConnection.setLocalDescription(sdp);
-            })
-            .then(function () {
-              socket.emit("answer", id, peerConnection.localDescription);
-            });
-        });
-      });
-      peerConnection.onaddstream = (event) => {
+    peerConnection
+    .setRemoteDescription(description)
+    .then(() => peerConnection.createAnswer())
+    .then(sdp => peerConnection.setLocalDescription(sdp))
+    .then(() => {
+      socket.emit("answer", id, peerConnection.localDescription);
+    });
+      peerConnection.addEventListener('addstream', (event) => {
         video.srcObject = event.stream;
         video.muted = false;
-      };
+      });
   
       peerConnection.onicecandidate = (event) => {
         if (event.candidate) {
