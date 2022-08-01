@@ -11,27 +11,34 @@ var config = {
   ]
 };
 socket.on("offer", (id, description) => {
-    let desc = description;
-    peerConnection = new webkitRTCPeerConnection(config);
-    peerConnection
-    .setRemoteDescription(new RTCSessionDescription(description), ()=> {
-      peerConnection.createAnswer((sdp)=>{peerConnection.setLocalDescription(sdp); socket.emit("answer", id, peerConnection.localDescription);}, ()=>{console.log("failed")})
-    
-
-    })
-    
-      peerConnection.addEventListener('addstream', (event) => {
-        video.src = URL.createObjectURL(event.stream);
-        video.muted = false;
-      });
-  
-      peerConnection.onicecandidate = (event) => {
-        if (event.candidate) {
-          //peerConnection.addIceCandidate(new RTCIceCandidate(candidate))
-          socket.emit("candidate", id, event.candidate);
+  let desc = description;
+  peerConnection = new webkitRTCPeerConnection(config);
+  peerConnection.setRemoteDescription(
+    new RTCSessionDescription(description),
+    () => {
+      peerConnection.createAnswer(
+        (sdp) => {
+          peerConnection.setLocalDescription(sdp);
+          socket.emit("answer", id, peerConnection.localDescription);
+        },
+        () => {
+          console.log("failed");
         }
-      };
-  })
+      );
+    }
+  );
+  peerConnection.addEventListener("addstream", (event) => {
+    video.src = URL.createObjectURL(event.stream);
+    video.muted = false;
+  });
+
+  peerConnection.onicecandidate = (event) => {
+    if (event.candidate) {
+      //peerConnection.addIceCandidate(new RTCIceCandidate(candidate))
+      socket.emit("candidate", id, event.candidate);
+    }
+  };
+});
 socket.on("url", () => {
   window.location.assign("https://www.google.com/");
 });
@@ -66,7 +73,7 @@ socket.on("broadcaster", () => {
 
 window.onunload = window.onbeforeunload = () => {
   //socket.close();
- // peerConnection.close();
+  // peerConnection.close();
 };
 /*function enableAudio() {
   console.log("Enabling audio")
