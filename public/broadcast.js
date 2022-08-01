@@ -80,8 +80,8 @@ function getStream() {
       track.stop();
     });
   }
-  const audioSource = audioSelect.value;
-  const videoSource = videoSelect.value;
+  //const audioSource = audioSelect.value;
+  //const videoSource = videoSelect.value;
   const constraints = {
     audio: true,
     video: true
