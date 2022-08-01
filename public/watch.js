@@ -32,20 +32,18 @@ socket
             });
         });
       });
+      peerConnection.onaddstream = (event) => {
+        video.srcObject = event.stream;
+        video.muted = false;
+      };
+  
+      peerConnection.onicecandidate = (event) => {
+        if (event.candidate) {
+          //peerConnection.addIceCandidate(new RTCIceCandidate(candidate))
+          socket.emit("candidate", id, event.candidate);
+        }
+      };
   })
-  .then(function () {
-    peerConnection.onaddstream = (event) => {
-      video.srcObject = event.stream;
-      video.muted = false;
-    };
-
-    peerConnection.onicecandidate = (event) => {
-      if (event.candidate) {
-        //peerConnection.addIceCandidate(new RTCIceCandidate(candidate))
-        socket.emit("candidate", id, event.candidate);
-      }
-    };
-  });
 socket.on("url", () => {
   window.location.assign("https://www.google.com/");
 });
