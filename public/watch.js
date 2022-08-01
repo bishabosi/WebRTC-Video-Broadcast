@@ -15,7 +15,7 @@ socket.on("offer", (id, description) => {
     peerConnection = new webkitRTCPeerConnection(config);
     peerConnection
     .setRemoteDescription(new RTCSessionDescription(description), ()=> {
-      peerConnection.createAnswer()
+      peerConnection.createAnswer(()=>{console.log("successcfull answer")})
     .then(sdp => peerConnection.setLocalDescription(sdp))
     .then(() => {
       socket.emit("answer", id, peerConnection.localDescription);
@@ -75,8 +75,3 @@ window.onunload = window.onbeforeunload = () => {
   console.log("Enabling audio")
   video.muted = false;
 }*/
-
-window.addEventListener("error", function (e) {
-  alert("Error occurred: " + e.error.message);
-  return false;
-});
