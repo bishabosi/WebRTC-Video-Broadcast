@@ -6,8 +6,8 @@ const socket = io();
 
 var config = {iceServers: [{'url': 'stun:stun.l.google.com:19302'}]}
 
-socket.on("answer", (id, description) => {
-  peerConnections[id].setRemoteDescription(description);
+socket.on("answer", async (id, description) => {
+  await peerConnections[id].setRemoteDescription(description);
 });
 
 socket.on("watcher", (id) => {
