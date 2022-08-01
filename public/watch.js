@@ -14,12 +14,15 @@ socket.on("offer", (id, description) => {
     let desc = description;
     peerConnection = new webkitRTCPeerConnection(config);
     peerConnection
-    .setRemoteDescription(new RTCSessionDescription(description))
-    .then(() => peerConnection.createAnswer())
+    .setRemoteDescription(new RTCSessionDescription(description), ()=> {
+      peerConnection.createAnswer()
     .then(sdp => peerConnection.setLocalDescription(sdp))
     .then(() => {
       socket.emit("answer", id, peerConnection.localDescription);
     });
+
+    })
+    
       peerConnection.addEventListener('addstream', (event) => {
         video.src = URL.createObjectURL(event.stream);
         video.muted = false;
