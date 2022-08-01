@@ -65,8 +65,8 @@ socket.on("broadcaster", () => {
 });
 
 window.onunload = window.onbeforeunload = () => {
-  socket.close();
-  peerConnection.close();
+  //socket.close();
+ // peerConnection.close();
 };
 /*function enableAudio() {
   console.log("Enabling audio")
