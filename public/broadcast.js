@@ -10,7 +10,7 @@ socket.on("answer", (id, description) => {
   peerConnections[id].setRemoteDescription(description);
 });
 
-socket.on("watcher", async (id) => {
+socket.on("watcher", (id) => {
   const peerConnection = new RTCPeerConnection(config);
   peerConnections[id] = peerConnection;
 
@@ -37,8 +37,11 @@ socket.on("watcher", async (id) => {
       offerToReceiveVideo: 0,
     }*/
 
-  await peerConnection
-    .createOffer()
+  peerConnection
+    .createOffer({
+      offerToReceiveAudio: 0,
+      offerToReceiveVideo: 0,
+    })
     .then(sdp => peerConnection.setLocalDescription(sdp))
     .then(() => {
 
