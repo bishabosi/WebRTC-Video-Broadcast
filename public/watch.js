@@ -22,10 +22,10 @@ socket.on("offer", (id, description) => {
     })
     .then(function () {
       return peerConnection
-        .createAnswer(function(sdp) {peerConnection.setLocalDescription(sdp)})
-        .then(() => {
+        .createAnswer(function(sdp) {peerConnection.setLocalDescription(sdp).then(() => {
           socket.emit("answer", id, peerConnection.localDescription);
-        });
+        });})
+        
     })
     .then(function () {
       peerConnection.onaddstream = (event) => {
