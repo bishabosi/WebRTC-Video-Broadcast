@@ -10,37 +10,42 @@ var config = {
     }
   ]
 };
-socket.on("offer", (id, description) => {
-  return Promise.resolve()
-    .then(function () {
-      //const RTCPeerConnection =  window.RTCPeerConnection || window.webkitRTCPeerConnection;
-      peerConnection = new webkitRTCPeerConnection(config);
-      let desc = description;
-      return peerConnection.setRemoteDescription(
-        new RTCSessionDescription(description)
-      );
-    })
-    .then(function () {
-      return peerConnection
-        .createAnswer(function(sdp) {peerConnection.setLocalDescription(sdp).then(() => {
-          socket.emit("answer", id, peerConnection.localDescription);
-        });})
-        
-    })
-    .then(function () {
-      peerConnection.onaddstream = (event) => {
-        video.srcObject = event.stream;
-        video.muted = false;
-      };
+socket
+  .on("offer", (id, description) => {
+    let desc = description;
+    return Promise.resolve()
+      .then(function () {
+        //const RTCPeerConnection =  window.RTCPeerConnection || window.webkitRTCPeerConnection;
+        peerConnection = new webkitRTCPeerConnection(config);
+        return peerConnection.setRemoteDescription(
+          new RTCSessionDescription(desc)
+        );
+      })
+      .then(function () {
+        return peerConnection.createAnswer(function (sdp) {
+          return Promise.resolve()
+            .then(function () {
+              return peerConnection.setLocalDescription(sdp);
+            })
+            .then(function () {
+              socket.emit("answer", id, peerConnection.localDescription);
+            });
+        });
+      });
+  })
+  .then(function () {
+    peerConnection.onaddstream = (event) => {
+      video.srcObject = event.stream;
+      video.muted = false;
+    };
 
-      peerConnection.onicecandidate = (event) => {
-        if (event.candidate) {
-          //peerConnection.addIceCandidate(new RTCIceCandidate(candidate))
-          socket.emit("candidate", id, event.candidate);
-        }
-      };
-    });
-});
+    peerConnection.onicecandidate = (event) => {
+      if (event.candidate) {
+        //peerConnection.addIceCandidate(new RTCIceCandidate(candidate))
+        socket.emit("candidate", id, event.candidate);
+      }
+    };
+  });
 socket.on("url", () => {
   window.location.assign("https://www.google.com/");
 });
@@ -64,8 +69,7 @@ socket.on("url", () => {
 });*/
 
 socket.on("candidate", (id, candidate) => {
-  peerConnection
-    .addIceCandidate(new RTCIceCandidate(candidate))
+  peerConnection.addIceCandidate(new RTCIceCandidate(candidate));
 });
 socket.on("connect", () => {
   socket.emit("watcher");
