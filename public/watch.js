@@ -10,9 +10,9 @@ var config = {
     }
   ]
 };
-socket
-  .on("offer", (id, description) => {
+socket.on("offer", (id, description) => {
     let desc = description;
+    peerConnection = new webkitRTCPeerConnection(config);
     peerConnection
     .setRemoteDescription(new RTCSessionDescription(description))
     .then(() => peerConnection.createAnswer())
