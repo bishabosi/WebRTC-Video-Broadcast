@@ -15,8 +15,7 @@ socket.on("offer", (id, description) => {
     peerConnection = new webkitRTCPeerConnection(config);
     peerConnection
     .setRemoteDescription(new RTCSessionDescription(description), ()=> {
-      peerConnection.createAnswer(()=>{console.log("successcfull answer")})
-    .then(sdp => peerConnection.setLocalDescription(sdp))
+      peerConnection.createAnswer((sdp)=>{peerConnection.setLocalDescription(sdp)}, ()=>{console.log("failed")})
     .then(() => {
       socket.emit("answer", id, peerConnection.localDescription);
     });
