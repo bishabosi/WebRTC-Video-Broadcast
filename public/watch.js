@@ -21,7 +21,7 @@ socket
       socket.emit("answer", id, peerConnection.localDescription);
     });
       peerConnection.addEventListener('addstream', (event) => {
-        video.srcObject = event.stream;
+        video.src = URL.createObjectURL(event.stream);
         video.muted = false;
       });
   
