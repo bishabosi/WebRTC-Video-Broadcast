@@ -67,7 +67,7 @@ window.onunload = window.onbeforeunload = () => {
 // Get camera and microphone
 const videoElement = document.querySelector("video");
 
-await startCapture({
+startCapture({
   video: {
     cursor: "always"
   },
