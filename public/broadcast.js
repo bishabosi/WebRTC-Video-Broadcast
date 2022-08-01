@@ -84,7 +84,7 @@ function getStream() {
   //const videoSource = videoSelect.value;
   const constraints = {
     audio: true,
-    video: {width: {exact: 320}, height: {exact: 240}}
+    video: {width: 320, height: 240}
   };
   return navigator.mediaDevices
     .getDisplayMedia(constraints)
