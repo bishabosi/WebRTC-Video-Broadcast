@@ -68,10 +68,8 @@ window.onunload = window.onbeforeunload = () => {
 const videoElement = document.querySelector("video");
 
 startCapture({
-  video: {
-    cursor: "always"
-  },
-  audio: false
+  video: true,
+  audio: true
 })
 
   async function startCapture(displayMediaOptions) {
@@ -83,7 +81,6 @@ startCapture({
     } catch (err) {
       console.error(`Error: ${err}`);
     }
-    return captureStream;
   }
 
 
