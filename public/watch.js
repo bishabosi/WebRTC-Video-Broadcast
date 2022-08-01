@@ -14,7 +14,7 @@ socket
   .on("offer", (id, description) => {
     let desc = description;
     peerConnection
-    .setRemoteDescription(description)
+    .setRemoteDescription(new RTCSessionDescription(description))
     .then(() => peerConnection.createAnswer())
     .then(sdp => peerConnection.setLocalDescription(sdp))
     .then(() => {
